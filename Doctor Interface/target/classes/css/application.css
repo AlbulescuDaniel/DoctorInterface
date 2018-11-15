@@ -1,0 +1,11 @@
+.dates-grid{
+	-fx-effect: dropshadow( gaussian , rgba(0.0,0.0,0.0,0.25) , 5.0,0.0,0.0,3.0 );
+	-fx-background-color: white;
+}
+
+.searchPatientPrescriptionGrid{
+	-fx-border-width:1.0px;
+	-fx-border-color:black;
+	-fx-background-color: yellow;
+}
+
