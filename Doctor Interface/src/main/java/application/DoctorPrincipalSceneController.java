@@ -21,10 +21,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import request.PrescriptionsTabRequest;
-import table.PrescriptionTableControl;
-import table.PrescriptionTableFormat;
+import table.CreatePrescriptionTableControl;
+import table.PatientPrescriptionsTableControl;
+import table.PatientPrescriptionsTableFormat;
 import utility.DateFormatConverter;
 import utility.GUIUtils;
 import utility.JWTInfo;
@@ -33,6 +35,12 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private GridPane pane;
+  
+  @FXML
+  private ColumnConstraints createPrescriptionGridColumn;
+  
+  @FXML
+  private GridPane createPrescriptionGridPane;
 
   @FXML
   private Button button;
@@ -59,7 +67,7 @@ public class DoctorPrincipalSceneController {
   private Button createPrescriptionSend;
 
   @FXML
-  private TableView<PrescriptionTableFormat> table;
+  private TableView<PatientPrescriptionsTableFormat> table;
 
   // @FXML
   // private TableView<MedicamentTableCompletation> medicamentTable;
@@ -87,16 +95,16 @@ public class DoctorPrincipalSceneController {
   private TableColumn prescriptMedicamentObservations;
   
   @FXML
-  private TableColumn<PrescriptionTableFormat, Long> prescriptionTableId;
+  private TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId;
   
   @FXML
-  private TableColumn<PrescriptionTableFormat, String> days;
+  private TableColumn<PatientPrescriptionsTableFormat, String> days;
 
   @FXML
-  private TableColumn<PrescriptionTableFormat, Date> prescriptionDate;
+  private TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate;
 
   @FXML
-  private TableColumn<PrescriptionTableFormat, String> diagnostic;
+  private TableColumn<PatientPrescriptionsTableFormat, String> diagnostic;
 
   @SuppressWarnings("rawtypes")
   @FXML
@@ -148,12 +156,6 @@ public class DoctorPrincipalSceneController {
   private DatePicker registerPatientDatePicker;
 
   @FXML
-  private DatePicker createPrescriptionBirthDate;
-
-  @FXML
-  private DatePicker createPrescriptionPrescriptionDate;
-
-  @FXML
   private RadioButton registerPatientRadioButtonMale;
 
   @FXML
@@ -182,7 +184,13 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private Label diagnosticLabel;
-
+  
+  @FXML
+  private TextField createPrescriptionURCTextField;
+  
+  @FXML
+  private TextField createPrescriptionStateTextField;
+  
   @FXML
   private TextField firstNameField;
 
@@ -225,39 +233,6 @@ public class DoctorPrincipalSceneController {
   @FXML
   private TextField CNPRegister;
 
-  @FXML
-  private TextField createPrescriptionDoctorFirstName;
-
-  @FXML
-  private TextField createPrescriptionDoctorLastName;
-
-  @FXML
-  private TextField createPrescriptionDoctorSoeciality;
-
-  @FXML
-  private TextField createPrescriptionDoctorPhone;
-
-  @FXML
-  private TextField createPrescriptionDoctorEmail;
-
-  @FXML
-  private TextField createPrescriptionHospitalName;
-
-  @FXML
-  private TextField createPrescriptionHospitalFullAddress;
-
-  @FXML
-  private TextField createPrescriptionPatientFirstName;
-
-  @FXML
-  private TextField createPrescriptionPatientLastName;
-
-  @FXML
-  private TextField createPrescriptionPatientCnp;
-
-  @FXML
-  private TextField createPrescriptionPatientDiagnostic;
-
   private JWTInfo token;
 
   public void setToken(JWTInfo token) {
@@ -268,7 +243,7 @@ public class DoctorPrincipalSceneController {
   private void initialize() {
     gridPanePrescription.setVisible(true);
 
-    DateFormatConverter.setConverter(datepickerFrom, datepickerTo, createPrescriptionBirthDate, createPrescriptionPrescriptionDate, registerPatientDatePicker);
+    DateFormatConverter.setConverter(datepickerFrom, datepickerTo, registerPatientDatePicker);
 
     datepickerFrom.setValue(LocalDate.now().minusYears(1));
     datepickerTo.setValue(LocalDate.now());
@@ -283,13 +258,14 @@ public class DoctorPrincipalSceneController {
       gridPanelTable.setVisible(true);
     });
 
-    PrescriptionTableControl.setTableColumnWidth(pane, table, diagnostic, days, prescriptionDate, prescriptionTableId);
-    PrescriptionTableControl.prescriptionTableRowEvent(table);
+    PatientPrescriptionsTableControl.setWidth(pane, table, diagnostic, days, prescriptionDate, prescriptionTableId);
+    CreatePrescriptionTableControl.setWidth(pane, createPrescriptionGridColumn, createPrescriptionGridPane);
+    PatientPrescriptionsTableControl.prescriptionTableRowEvent(table);
 
     populateTableButton.setOnAction(event -> {
       try {
         List<Prescription> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(), datepickerTo.getValue());
-        PrescriptionTableControl.initializePrescriptionTable(prescriptions, table, diagnostic, days, prescriptionDate, prescriptionTableId);
+        PatientPrescriptionsTableControl.initializePrescriptionTable(prescriptions, table, diagnostic, days, prescriptionDate, prescriptionTableId);
       }
       catch (Exception e) {
       }
@@ -672,7 +648,7 @@ public class DoctorPrincipalSceneController {
   // }
 
   //
-//   private void moveToPrescriptionGrid(PrescriptionTableFormat prescription) {
+//   private void moveToPrescriptionGrid(PatientPrescriptionsTableFormat prescription) {
 //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 //  
 //   gridPanelTable.setVisible(false);

@@ -16,13 +16,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import utility.GUIUtils;
 
-public class PrescriptionTableControl {
+public class PatientPrescriptionsTableControl {
 
-  private PrescriptionTableControl() {
+  private PatientPrescriptionsTableControl() {
   }
 
-  public static void setTableColumnWidth(GridPane pane, TableView<PrescriptionTableFormat> table, TableColumn<PrescriptionTableFormat, String> diagnostic,
-      TableColumn<PrescriptionTableFormat, String> days, TableColumn<PrescriptionTableFormat, Date> prescriptionDate, TableColumn<PrescriptionTableFormat, Long> prescriptionTableId) {
+  public static void setWidth(GridPane pane, TableView<PatientPrescriptionsTableFormat> table, TableColumn<PatientPrescriptionsTableFormat, String> diagnostic,
+      TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate, TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     prescriptionTableId.setPrefWidth(0d);
     pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
       table.setPrefWidth(newSceneWidth.doubleValue() - 40);
@@ -32,32 +32,32 @@ public class PrescriptionTableControl {
     });
   }
 
-  public static void initializePrescriptionTable(List<Prescription> prescriptions, TableView<PrescriptionTableFormat> table, TableColumn<PrescriptionTableFormat, String> diagnostic,
-      TableColumn<PrescriptionTableFormat, String> days, TableColumn<PrescriptionTableFormat, Date> prescriptionDate, TableColumn<PrescriptionTableFormat, Long> prescriptionTableId) {
+  public static void initializePrescriptionTable(List<Prescription> prescriptions, TableView<PatientPrescriptionsTableFormat> table, TableColumn<PatientPrescriptionsTableFormat, String> diagnostic,
+      TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate, TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     days.setStyle("-fx-padding: 0 0 0 10;");
     prescriptionDate.setStyle("-fx-padding: 0 0 0 10;");
     diagnostic.setStyle("-fx-padding: 0 0 0 10;");
 
-    ObservableList<PrescriptionTableFormat> fillTablePrescriptions = FXCollections.observableArrayList();
+    ObservableList<PatientPrescriptionsTableFormat> fillTablePrescriptions = FXCollections.observableArrayList();
     prescriptions.forEach(p -> {
       Calendar cal = Calendar.getInstance();
       cal.setTime(p.getDatePrescripted());
       String formatedDate = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR);
-      fillTablePrescriptions.add(new PrescriptionTableFormat(p.getId(), p.getDiagnostic(), p.getDays(), formatedDate));
+      fillTablePrescriptions.add(new PatientPrescriptionsTableFormat(p.getId(), p.getDiagnostic(), p.getDays(), formatedDate));
     });
     table.setItems(fillTablePrescriptions);
 
-    days.setCellValueFactory(new PropertyValueFactory<PrescriptionTableFormat, String>("days"));
-    prescriptionDate.setCellValueFactory(new PropertyValueFactory<PrescriptionTableFormat, Date>("datePrescripted"));
-    diagnostic.setCellValueFactory(new PropertyValueFactory<PrescriptionTableFormat, String>("diagnostic"));
+    days.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, String>("days"));
+    prescriptionDate.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, Date>("datePrescripted"));
+    diagnostic.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, String>("diagnostic"));
   }
   
-  public static void prescriptionTableRowEvent(TableView<PrescriptionTableFormat> table) {
+  public static void prescriptionTableRowEvent(TableView<PatientPrescriptionsTableFormat> table) {
     table.setRowFactory(e -> {
-      TableRow<PrescriptionTableFormat> row = new TableRow<>();
+      TableRow<PatientPrescriptionsTableFormat> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
         if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-          PrescriptionTableFormat clickedRow = row.getItem();
+          PatientPrescriptionsTableFormat clickedRow = row.getItem();
           Long id = clickedRow.getId();
           System.err.println(id);
 //          moveToPrescriptionGrid(prescription);

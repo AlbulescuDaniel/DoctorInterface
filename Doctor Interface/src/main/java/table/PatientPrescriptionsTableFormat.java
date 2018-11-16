@@ -1,13 +1,13 @@
 package table;
 
-public class PrescriptionTableFormat {
+public class PatientPrescriptionsTableFormat {
   
   private Long id;
   private String diagnostic;
   private Integer days;
   private String datePrescripted;
 
-  public PrescriptionTableFormat(Long id, String diagnostic, Integer days, String datePrescripted) {
+  public PatientPrescriptionsTableFormat(Long id, String diagnostic, Integer days, String datePrescripted) {
     super();
     this.id = id;
     this.diagnostic = diagnostic;

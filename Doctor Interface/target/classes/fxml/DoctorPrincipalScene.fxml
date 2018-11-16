@@ -8,11 +8,14 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -66,7 +69,7 @@
 											<placeholder>
 											</placeholder>
 											<columns>
-                                    <TableColumn fx:id="prescriptionTableId" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+												<TableColumn fx:id="prescriptionTableId" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
 												<TableColumn fx:id="prescriptionDate" maxWidth="1.7976931348623157E308" prefWidth="235.99996948242188" text="Prescription date" />
 												<TableColumn fx:id="days" prefWidth="185.0" text="Days" />
 												<TableColumn fx:id="diagnostic" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="738.0" text="Diagnostic" />
@@ -122,224 +125,258 @@
 					<content>
 						<AnchorPane prefHeight="200.0" prefWidth="200.0">
 							<children>
-								<GridPane layoutY="7.0" prefHeight="706.0" prefWidth="1200.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
+								<GridPane layoutY="7.0" prefHeight="710.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 									<columnConstraints>
 										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="0.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="170.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="348.0" minWidth="10.0" prefWidth="336.0" />
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="0.0" />
+										<ColumnConstraints />
+										<ColumnConstraints />
+										<ColumnConstraints />
+										<ColumnConstraints />
+										<ColumnConstraints />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
 										<RowConstraints minHeight="10.0" prefHeight="260.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+										<RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<Label text="Doctor first name" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<Label text="Docor speciality" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<Label text="Hospital Name" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<Label text="Hospital full address" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<TextField fx:id="createPrescriptionHospitalName" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</TextField>
-										<TextField fx:id="createPrescriptionHospitalFullAddress" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="4">
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</TextField>
-										<Button fx:id="createPrescriptionDoctorAutocomplete" mnemonicParsing="false" text="Autocomplete" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
-										<Label text="Patient first name" GridPane.columnIndex="1" GridPane.rowIndex="6">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<Label text="CNP" GridPane.columnIndex="1" GridPane.rowIndex="7">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<Button fx:id="createPrescriptionPatientAutocomplete" mnemonicParsing="false" text="Autocomplete" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-										<TableView fx:id="prescriptMedicamentTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="6" GridPane.rowIndex="10">
+										<TableView fx:id="prescriptMedicamentTable" GridPane.columnSpan="6" GridPane.rowIndex="1">
 											<columns>
-												<TableColumn fx:id="prescriptMedicamentName" prefWidth="149.99996948242188" text="Medicament name" />
-												<TableColumn fx:id="prescriptMedicamentPrescriptedDays" minWidth="0.0" prefWidth="125.0" text="Prescripted days" />
-												<TableColumn fx:id="prescriptMedicamentPillsPerDay" prefWidth="83.0" text="Pills / day" />
-												<TableColumn fx:id="prescriptMedicamentObservations" minWidth="0.0" prefWidth="615.0" text="Observations" />
-												<TableColumn prefWidth="186.0" />
+												<TableColumn prefWidth="65.99996948242188" text="Number" />
+												<TableColumn fx:id="prescriptMedicamentName" prefWidth="323.0" text="International drug name / Comercial name " />
+												<TableColumn fx:id="prescriptMedicamentPrescriptedDays" minWidth="0.0" prefWidth="132.0" text="Prescripted days" />
+												<TableColumn fx:id="prescriptMedicamentPillsPerDay" prefWidth="97.0" text="Pills / day" />
+												<TableColumn fx:id="prescriptMedicamentObservations" minWidth="0.0" prefWidth="541.0" text="Observations" />
 											</columns>
 											<GridPane.margin>
-												<Insets left="20.0" right="20.0" top="20.0" />
+												<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
 											</GridPane.margin>
 										</TableView>
-										<Button fx:id="createPrescriptionSend" maxWidth="100.0" mnemonicParsing="false" text="Send" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
+										<ScrollPane>
+											<content>
+												<AnchorPane>
+													<children>
+														<GridPane fx:id="createPrescriptionGridPane" layoutX="21.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="627.0" prefWidth="1121.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+															<columnConstraints>
+																<ColumnConstraints fx:id="createPrescriptionGridColumn" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+																<RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<GridPane prefHeight="250.0" prefWidth="903.0">
+																	<columnConstraints>
+																		<ColumnConstraints hgrow="SOMETIMES" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<GridPane>
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="Number :" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+																					<GridPane.margin>
+																						<Insets right="20.0" />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField maxWidth="100.0" minWidth="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+																					<GridPane.margin>
+																						<Insets left="20.0" right="20.0" />
+																					</GridPane.margin>
+																				</TextField>
+																			</children>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="1">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="Hospital name">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="2">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="URC" />
+																				<Label text="State" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField fx:id="createPrescriptionURCTextFieldcreatePrescriptionURCTextField" GridPane.columnIndex="1" />
+																				<TextField fx:id="createPrescriptionStateTextField" GridPane.columnIndex="3" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="3">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="Phone / FAX">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="4">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="Doctor email">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																	</children>
+																</GridPane>
+																<GridPane prefHeight="250.0" prefWidth="903.0" GridPane.rowIndex="2">
+																	<rowConstraints>
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<columnConstraints>
+																		<ColumnConstraints hgrow="SOMETIMES" />
+																	</columnConstraints>
+																	<children>
+																		<GridPane>
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="First Name">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="1">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="Last Name">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																		<GridPane GridPane.rowIndex="2">
+																			<columnConstraints>
+																				<ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+																				<ColumnConstraints hgrow="SOMETIMES" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<children>
+																				<Label text="CID/CNP">
+																					<GridPane.margin>
+																						<Insets />
+																					</GridPane.margin>
+																				</Label>
+																				<TextField minWidth="-Infinity" GridPane.columnIndex="1" />
+																			</children>
+																			<GridPane.margin>
+																				<Insets left="20.0" right="20.0" />
+																			</GridPane.margin>
+																		</GridPane>
+																	</children>
+																</GridPane>
+																<Separator GridPane.columnSpan="2" GridPane.rowIndex="1">
+																	<GridPane.margin>
+																		<Insets left="20.0" right="20.0" />
+																	</GridPane.margin>
+																	<effect>
+																		<Blend mode="DARKEN" />
+																	</effect>
+																</Separator>
+															</children>
+														</GridPane>
+													</children>
+												</AnchorPane>
+											</content>
 											<GridPane.margin>
-												<Insets right="20.0" />
+												<Insets top="-10.0" />
 											</GridPane.margin>
-										</Button>
-										<Button fx:id="createPrescriptionAddMedicament" mnemonicParsing="false" text="Add medicament" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
-											<GridPane.margin>
-												<Insets right="60.0" />
-											</GridPane.margin>
-										</Button>
-										<GridPane GridPane.columnIndex="2" GridPane.columnSpan="3">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-											<children>
-												<TextField fx:id="createPrescriptionDoctorFirstName" />
-												<TextField fx:id="createPrescriptionDoctorLastName" GridPane.columnIndex="2" />
-												<Label text="Doctor last name" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-													<GridPane.margin>
-														<Insets left="50.0" />
-													</GridPane.margin>
-												</Label>
-											</children>
-										</GridPane>
-										<GridPane GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="6">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-											<children>
-												<TextField fx:id="createPrescriptionPatientFirstName" />
-												<TextField fx:id="createPrescriptionPatientLastName" GridPane.columnIndex="2" />
-												<Label text="Patient last name" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-													<GridPane.margin>
-														<Insets left="50.0" />
-													</GridPane.margin>
-												</Label>
-											</children>
-										</GridPane>
-										<GridPane GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<children>
-												<TextField fx:id="createPrescriptionDoctorSoeciality" />
-												<TextField fx:id="createPrescriptionDoctorPhone" GridPane.columnIndex="2" />
-												<Label text="Doctor phone" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-													<GridPane.margin>
-														<Insets left="50.0" />
-													</GridPane.margin>
-												</Label>
-											</children>
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</GridPane>
-										<Label text="Docor e-mail" GridPane.columnIndex="1" GridPane.rowIndex="2">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<GridPane GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="2">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<children>
-												<TextField fx:id="createPrescriptionDoctorEmail" />
-												<Label text="Prescription date" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-													<GridPane.margin>
-														<Insets left="50.0" />
-													</GridPane.margin>
-												</Label>
-												<DatePicker fx:id="createPrescriptionPrescriptionDate" maxWidth="300.0" GridPane.columnIndex="2" />
-											</children>
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</GridPane>
-										<GridPane GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="7">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<children>
-												<TextField fx:id="createPrescriptionPatientCnp">
-													<GridPane.margin>
-														<Insets />
-													</GridPane.margin>
-												</TextField>
-												<Label text="Birth date" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-													<GridPane.margin>
-														<Insets left="50.0" />
-													</GridPane.margin>
-												</Label>
-												<DatePicker fx:id="createPrescriptionBirthDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
-											</children>
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</GridPane>
-										<Label text="Diagnostic" GridPane.columnIndex="1" GridPane.rowIndex="9">
-											<GridPane.margin>
-												<Insets left="20.0" />
-											</GridPane.margin>
-										</Label>
-										<TextField fx:id="createPrescriptionPatientDiagnostic" maxHeight="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="9">
-											<GridPane.margin>
-												<Insets right="140.0" />
-											</GridPane.margin>
-										</TextField>
+										</ScrollPane>
 									</children>
 								</GridPane>
 							</children>
