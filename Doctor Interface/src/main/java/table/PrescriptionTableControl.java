@@ -59,6 +59,7 @@ public class PrescriptionTableControl {
         if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           PrescriptionTableFormat clickedRow = row.getItem();
           Long id = clickedRow.getId();
+          System.err.println(id);
 //          moveToPrescriptionGrid(prescription);
         }
       });
