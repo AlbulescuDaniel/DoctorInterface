@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -14,7 +14,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import utility.GUIUtils;
 
 public class PatientPrescriptionsTableControl {
 
@@ -25,6 +24,8 @@ public class PatientPrescriptionsTableControl {
       TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate, TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     prescriptionTableId.setPrefWidth(0d);
     pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
+      System.out.println(newSceneWidth);
+
       table.setPrefWidth(newSceneWidth.doubleValue() - 40);
       diagnostic.setPrefWidth(table.getPrefWidth() * 70 / 100);
       days.setPrefWidth(table.getPrefWidth() / 10);

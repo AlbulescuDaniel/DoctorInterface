@@ -1,13 +1,12 @@
 package utility;
 
+import java.lang.reflect.Method;
+
 import com.sun.javafx.scene.control.skin.TableViewSkin;
 
 import javafx.collections.ListChangeListener;
-import javafx.scene.control.Skin;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 @SuppressWarnings({ "restriction", "unused" })
 public class GUIUtils {

@@ -1,44 +1,46 @@
 package application;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import entity.Prescription;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import request.PrescriptionsTabRequest;
 import table.CreatePrescriptionTableControl;
 import table.PatientPrescriptionsTableControl;
 import table.PatientPrescriptionsTableFormat;
 import utility.DateFormatConverter;
-import utility.GUIUtils;
 import utility.JWTInfo;
 
 public class DoctorPrincipalSceneController {
 
   @FXML
   private GridPane pane;
-  
+
   @FXML
   private ColumnConstraints createPrescriptionGridColumn;
-  
+
+  @FXML
+  private RowConstraints createPrescriptionTableGridRow;
+
+  @FXML
+  private RowConstraints createPrescriptionComponentsGridRow;
+
   @FXML
   private GridPane createPrescriptionGridPane;
 
@@ -93,10 +95,10 @@ public class DoctorPrincipalSceneController {
   @SuppressWarnings("rawtypes")
   @FXML
   private TableColumn prescriptMedicamentObservations;
-  
+
   @FXML
   private TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId;
-  
+
   @FXML
   private TableColumn<PatientPrescriptionsTableFormat, String> days;
 
@@ -184,13 +186,16 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private Label diagnosticLabel;
-  
+
   @FXML
   private TextField createPrescriptionURCTextField;
-  
+
   @FXML
   private TextField createPrescriptionStateTextField;
-  
+
+  @FXML
+  private TextField createPrescriptionPatientDiagnostic;
+
   @FXML
   private TextField firstNameField;
 
@@ -242,9 +247,8 @@ public class DoctorPrincipalSceneController {
   @FXML
   private void initialize() {
     gridPanePrescription.setVisible(true);
-
     DateFormatConverter.setConverter(datepickerFrom, datepickerTo, registerPatientDatePicker);
-
+    
     datepickerFrom.setValue(LocalDate.now().minusYears(1));
     datepickerTo.setValue(LocalDate.now());
 
@@ -252,14 +256,16 @@ public class DoctorPrincipalSceneController {
     registerPatientRadioButtonMale.setSelected(true);
     registerPatientRadioButtonMale.setToggleGroup(group);
     registerPatientRadioButtonFemale.setToggleGroup(group);
-
+    
     button.setOnAction(event -> {
       gridPanePrescription.setVisible(false);
       gridPanelTable.setVisible(true);
     });
-
+    
+    // createPrescriptionTableGridRow
     PatientPrescriptionsTableControl.setWidth(pane, table, diagnostic, days, prescriptionDate, prescriptionTableId);
     CreatePrescriptionTableControl.setWidth(pane, createPrescriptionGridColumn, createPrescriptionGridPane);
+    CreatePrescriptionTableControl.setHeight(pane, createPrescriptionTableGridRow, createPrescriptionComponentsGridRow);
     PatientPrescriptionsTableControl.prescriptionTableRowEvent(table);
 
     populateTableButton.setOnAction(event -> {
@@ -648,39 +654,39 @@ public class DoctorPrincipalSceneController {
   // }
 
   //
-//   private void moveToPrescriptionGrid(PatientPrescriptionsTableFormat prescription) {
-//   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//  
-//   gridPanelTable.setVisible(false);
-//   gridPanePrescription.setVisible(true);
-//  
-//   doctorNameLabel.setText(prescription.getDoctorByIdDoctor().getFirstName() + " " + prescription.getDoctorByIdDoctor().getLastName());
-//   doctorSpecialityLabel.setText(concatenateSpecialities(prescription.getDoctorByIdDoctor().getDoctorSpecialitiesById()));
-//   doctorEmailLabel.setText(prescription.getDoctorByIdDoctor().getEmail());
-//   presctiptionDateLabel.setText(formatedDate(prescription.getDatePrescripted()).format(formatter));
-//   daysLabel.setText(((Integer)prescription.getDays()).toString());
-//   diagnosticLabel.setText(prescription.getDiagnostic());
-//  
-//   checked.setStyle("-fx-alignment: CENTER;");
-//   medicamentName.setStyle("-fx-padding: 0 0 0 10;");
-//   pills.setStyle("-fx-padding: 0 0 0 10;");
-//   observations.setStyle("-fx-padding: 0 0 0 10;");
-//  
-//   checked.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, Image>("checkedImage"));
-//   medicamentName.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, String>("medicamentName"));
-//   pills.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, Integer>("pills"));
-//   observations.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, String>("observations"));
-//  
-//   GUIUtils.autoFitTable(medicamentTable);
-//  
-//   ObservableList<MedicamentTableCompletation> fillTableMedicaments = FXCollections.observableArrayList();
-//  
-//   prescription.getPrescriptionMedicamentsByIdPrescription()
-//   .forEach(p -> fillTableMedicaments.add(new MedicamentTableCompletation(selectImage(p.getChecked()), p.getMedicamentByMedicamentId().getName(), p.getPillsNumber(), p.getDescription())));
-//  
-//   medicamentTable.setItems(fillTableMedicaments);
-//  
-//   }
+  // private void moveToPrescriptionGrid(PatientPrescriptionsTableFormat prescription) {
+  // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+  //
+  // gridPanelTable.setVisible(false);
+  // gridPanePrescription.setVisible(true);
+  //
+  // doctorNameLabel.setText(prescription.getDoctorByIdDoctor().getFirstName() + " " + prescription.getDoctorByIdDoctor().getLastName());
+  // doctorSpecialityLabel.setText(concatenateSpecialities(prescription.getDoctorByIdDoctor().getDoctorSpecialitiesById()));
+  // doctorEmailLabel.setText(prescription.getDoctorByIdDoctor().getEmail());
+  // presctiptionDateLabel.setText(formatedDate(prescription.getDatePrescripted()).format(formatter));
+  // daysLabel.setText(((Integer)prescription.getDays()).toString());
+  // diagnosticLabel.setText(prescription.getDiagnostic());
+  //
+  // checked.setStyle("-fx-alignment: CENTER;");
+  // medicamentName.setStyle("-fx-padding: 0 0 0 10;");
+  // pills.setStyle("-fx-padding: 0 0 0 10;");
+  // observations.setStyle("-fx-padding: 0 0 0 10;");
+  //
+  // checked.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, Image>("checkedImage"));
+  // medicamentName.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, String>("medicamentName"));
+  // pills.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, Integer>("pills"));
+  // observations.setCellValueFactory(new PropertyValueFactory<MedicamentTableCompletation, String>("observations"));
+  //
+  // GUIUtils.autoFitTable(medicamentTable);
+  //
+  // ObservableList<MedicamentTableCompletation> fillTableMedicaments = FXCollections.observableArrayList();
+  //
+  // prescription.getPrescriptionMedicamentsByIdPrescription()
+  // .forEach(p -> fillTableMedicaments.add(new MedicamentTableCompletation(selectImage(p.getChecked()), p.getMedicamentByMedicamentId().getName(), p.getPillsNumber(), p.getDescription())));
+  //
+  // medicamentTable.setItems(fillTableMedicaments);
+  //
+  // }
   //
   // @SuppressWarnings("unchecked")
   // private void initializePharmaciesTable() {
