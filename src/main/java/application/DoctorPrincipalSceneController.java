@@ -5,23 +5,24 @@ import java.util.Date;
 import java.util.List;
 
 import entity.Prescription;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import request.PrescriptionsTabRequest;
 import table.CreatePrescriptionTableControl;
+import table.MedicamentsTableControl;
 import table.PatientPrescriptionsTableControl;
 import table.PatientPrescriptionsTableFormat;
 import utility.DateFormatConverter;
@@ -36,13 +37,16 @@ public class DoctorPrincipalSceneController {
   private ColumnConstraints createPrescriptionGridColumn;
 
   @FXML
-  private RowConstraints createPrescriptionTableGridRow;
-
-  @FXML
   private RowConstraints createPrescriptionComponentsGridRow;
 
   @FXML
   private GridPane createPrescriptionGridPane;
+
+  @FXML
+  private ScrollPane createPrescriptionScrollPane;
+
+  @FXML
+  private AnchorPane CreatePrescriptionAnchorPane;
 
   @FXML
   private Button button;
@@ -164,6 +168,60 @@ public class DoctorPrincipalSceneController {
   private RadioButton registerPatientRadioButtonFemale;
 
   @FXML
+  private RadioButton createPrescriptionFamilyDoctorBox;
+
+  @FXML
+  private RadioButton createPrescriptionPoliclinicBox;
+
+  @FXML
+  private RadioButton createPrescriptionHospitalBox;
+
+  @FXML
+  private RadioButton createPrescriptionOtherInstitutionBox;
+
+  @FXML
+  private RadioButton createPrescriptionEmployeeBox;
+
+  @FXML
+  private RadioButton createPrescriptionInsuredBox;
+
+  @FXML
+  private RadioButton createPrescriptionFreelanceBox;
+
+  @FXML
+  private RadioButton createPrescriptionChildBox;
+
+  @FXML
+  private RadioButton createPrescriptionStudentBox;
+
+  @FXML
+  private RadioButton createPrescriptionPregnantBox;
+
+  @FXML
+  private RadioButton createPrescriptionRetiredBox;
+
+  @FXML
+  private RadioButton createPrescriptionVeteranBox;
+
+  @FXML
+  private RadioButton createPrescriptionHandicapBox;
+
+  @FXML
+  private RadioButton createPrescriptionSocialAidBox;
+
+  @FXML
+  private RadioButton createPrescriptionUnemployedBox;
+
+  @FXML
+  private RadioButton createPrescriptionStaffBox;
+
+  @FXML
+  private RadioButton createPrescriptionEuropeanBox;
+
+  @FXML
+  private RadioButton createPrescriptionOthersBox;
+
+  @FXML
   private GridPane gridPanelTable;
 
   @FXML
@@ -215,9 +273,6 @@ public class DoctorPrincipalSceneController {
   private TextField lasNameRegister;
 
   @FXML
-  private TextField ageRegister;
-
-  @FXML
   private TextField phoneRegister;
 
   @FXML
@@ -233,10 +288,7 @@ public class DoctorPrincipalSceneController {
   private TextField countryRegister;
 
   @FXML
-  private TextField addressLineRegister;
-
-  @FXML
-  private TextField CNPRegister;
+  private TextField persolanlIdNumberregister;
 
   private JWTInfo token;
 
@@ -247,26 +299,21 @@ public class DoctorPrincipalSceneController {
   @FXML
   private void initialize() {
     gridPanePrescription.setVisible(true);
-    DateFormatConverter.setConverter(datepickerFrom, datepickerTo, registerPatientDatePicker);
-    
     datepickerFrom.setValue(LocalDate.now().minusYears(1));
     datepickerTo.setValue(LocalDate.now());
+    createToggleGroups();
+    DateFormatConverter.setConverter(datepickerFrom, datepickerTo, registerPatientDatePicker);
 
-    ToggleGroup group = new ToggleGroup();
-    registerPatientRadioButtonMale.setSelected(true);
-    registerPatientRadioButtonMale.setToggleGroup(group);
-    registerPatientRadioButtonFemale.setToggleGroup(group);
-    
+    PatientPrescriptionsTableControl.setWidth(pane, table, diagnostic, days, prescriptionDate, prescriptionTableId);
+    PatientPrescriptionsTableControl.prescriptionTableRowEvent(table, gridPanePrescription, gridPanelTable);
+    CreatePrescriptionTableControl.setWidth(pane, createPrescriptionGridColumn, createPrescriptionGridPane);
+    CreatePrescriptionTableControl.setHeight(pane, createPrescriptionComponentsGridRow, createPrescriptionScrollPane, createPrescriptionGridPane, CreatePrescriptionAnchorPane);
+    MedicamentsTableControl.setWidth(pane, pharmacyName, pharmacyCity, pharmacyStreet, pharmacyStreetNumber, pharmacyPhone, medicamentPrce);
+
     button.setOnAction(event -> {
       gridPanePrescription.setVisible(false);
       gridPanelTable.setVisible(true);
     });
-    
-    // createPrescriptionTableGridRow
-    PatientPrescriptionsTableControl.setWidth(pane, table, diagnostic, days, prescriptionDate, prescriptionTableId);
-    CreatePrescriptionTableControl.setWidth(pane, createPrescriptionGridColumn, createPrescriptionGridPane);
-    CreatePrescriptionTableControl.setHeight(pane, createPrescriptionTableGridRow, createPrescriptionComponentsGridRow);
-    PatientPrescriptionsTableControl.prescriptionTableRowEvent(table);
 
     populateTableButton.setOnAction(event -> {
       try {
@@ -726,4 +773,34 @@ public class DoctorPrincipalSceneController {
   // }
   // return true;
   // }
+
+  private void createToggleGroups() {
+    ToggleGroup createPatientGender = new ToggleGroup();
+    registerPatientRadioButtonMale.setSelected(true);
+    registerPatientRadioButtonMale.setToggleGroup(createPatientGender);
+    registerPatientRadioButtonFemale.setToggleGroup(createPatientGender);
+
+    ToggleGroup createPrescriptionType = new ToggleGroup();
+    createPrescriptionFreelanceBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionInsuredBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionEmployeeBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionChildBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionStudentBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionPregnantBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionRetiredBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionVeteranBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionHandicapBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionSocialAidBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionUnemployedBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionStaffBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionEuropeanBox.setToggleGroup(createPrescriptionType);
+    createPrescriptionOthersBox.setToggleGroup(createPrescriptionType);
+
+    ToggleGroup createPatientInstitution = new ToggleGroup();
+    createPrescriptionPoliclinicBox.setToggleGroup(createPatientInstitution);
+    createPrescriptionFamilyDoctorBox.setToggleGroup(createPatientInstitution);
+    createPrescriptionHospitalBox.setToggleGroup(createPatientInstitution);
+    createPrescriptionOtherInstitutionBox.setToggleGroup(createPatientInstitution);
+  }
+
 }

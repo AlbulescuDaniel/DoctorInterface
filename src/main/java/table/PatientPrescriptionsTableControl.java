@@ -24,7 +24,6 @@ public class PatientPrescriptionsTableControl {
       TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate, TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     prescriptionTableId.setPrefWidth(0d);
     pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
-      System.out.println(newSceneWidth);
 
       table.setPrefWidth(newSceneWidth.doubleValue() - 40);
       diagnostic.setPrefWidth(table.getPrefWidth() * 70 / 100);
@@ -53,7 +52,7 @@ public class PatientPrescriptionsTableControl {
     diagnostic.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, String>("diagnostic"));
   }
   
-  public static void prescriptionTableRowEvent(TableView<PatientPrescriptionsTableFormat> table) {
+  public static void prescriptionTableRowEvent(TableView<PatientPrescriptionsTableFormat> table, GridPane gridPanePrescription, GridPane gridPanelTable) {
     table.setRowFactory(e -> {
       TableRow<PatientPrescriptionsTableFormat> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
@@ -61,6 +60,8 @@ public class PatientPrescriptionsTableControl {
           PatientPrescriptionsTableFormat clickedRow = row.getItem();
           Long id = clickedRow.getId();
           System.err.println(id);
+          gridPanePrescription.setVisible(true);
+          gridPanelTable.setVisible(false);
 //          moveToPrescriptionGrid(prescription);
         }
       });
