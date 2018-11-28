@@ -7,6 +7,7 @@ public class PrescriptionDrug {
   private String description;
   private Integer pillsNumber;
   private String drug;
+  private Integer days;
 
   public Long getId() {
     return id;
@@ -46,5 +47,32 @@ public class PrescriptionDrug {
 
   public void setDrug(String drug) {
     this.drug = drug;
+  }
+
+  public Integer getDays() {
+    return days;
+  }
+
+  public void setDays(Integer days) {
+    this.days = days;
+  }
+
+  public PrescriptionDrug() {
+    super();
+  }
+
+  public PrescriptionDrug(Long id, Boolean checked, String description, Integer pillsNumber, String drug, Integer days) {
+    super();
+    this.id = id;
+    this.checked = checked;
+    this.description = description;
+    this.pillsNumber = pillsNumber;
+    this.drug = drug;
+    this.days = days;
+  }
+
+  @Override
+  public String toString() {
+    return "PrescriptionDrug [id=" + id + ", checked=" + checked + ", description=" + description + ", pillsNumber=" + pillsNumber + ", drug=" + drug + ", days=" + days + "]";
   }
 }

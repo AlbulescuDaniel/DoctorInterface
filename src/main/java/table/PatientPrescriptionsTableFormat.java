@@ -4,14 +4,14 @@ public class PatientPrescriptionsTableFormat {
   
   private Long id;
   private String diagnostic;
-  private Integer days;
+  private String medication;
   private String datePrescripted;
 
-  public PatientPrescriptionsTableFormat(Long id, String diagnostic, Integer days, String datePrescripted) {
+  public PatientPrescriptionsTableFormat(Long id, String diagnostic, String medication, String datePrescripted) {
     super();
     this.id = id;
     this.diagnostic = diagnostic;
-    this.days = days;
+    this.medication = medication;
     this.datePrescripted = datePrescripted;
   }
 
@@ -31,12 +31,12 @@ public class PatientPrescriptionsTableFormat {
     this.diagnostic = diagnostic;
   }
 
-  public Integer getDays() {
-    return days;
+  public String getDays() {
+    return medication;
   }
 
-  public void setDays(Integer days) {
-    this.days = days;
+  public void setDays(String medication) {
+    this.medication = medication;
   }
 
   public String getDatePrescripted() {
