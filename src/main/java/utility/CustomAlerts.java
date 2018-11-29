@@ -47,4 +47,12 @@ public class CustomAlerts {
     alert.setContentText("Patient does not exist");
     alert.showAndWait();
   }
+  
+  public static void showDoctorDoesNotExistAlert() {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Database eror");
+    alert.setHeaderText("Error:");
+    alert.setContentText("Doctor does not exist");
+    alert.showAndWait();
+  }
 }

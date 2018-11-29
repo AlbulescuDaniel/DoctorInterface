@@ -6,6 +6,7 @@ import entity.Prescription;
 import entity.PrescriptionDrug;
 import entity.UserGender;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -75,7 +76,6 @@ public class CreatePrescriptionTableControl {
 
         if (row.isHover() && person != null) {
           row.setStyle("-fx-border-color: lightgray; -fx-background-color: gray;");
-          System.out.println(person.getName());
         }
         if (!row.isHover()) {
           row.setStyle("-fx-background-color: linear-gradient(white 0%, white 90%, #e0e0e0 90%);");
@@ -159,13 +159,27 @@ public class CreatePrescriptionTableControl {
     RadioButton button = (RadioButton)createPatientInstitution.getSelectedToggle();
     String hospitalType = button.getText();
 
-    button = (RadioButton)createPatientInstitution.getSelectedToggle();
+    button = (RadioButton)createPrescriptionType.getSelectedToggle();
     String patienttype = button.getText();
 
     button = (RadioButton)createPrescriptionGender.getSelectedToggle();
     UserGender gender = button.getText().equals("M") ? UserGender.Male : UserGender.Female;
-    
-    return new Prescription(Long.valueOf(1), Long.valueOf(createPrescriptionNumber.getText()), hospitalType, patienttype, createPrescriptionPatientDiagnostic.getText(), createPrescriptionBirthDate.getValue(), gender,
-        createPrescriptionNationalityTextField.getText(), new ArrayList<PrescriptionDrug>());
+
+    Prescription prescription = new Prescription(Long.valueOf(1), Long.valueOf(createPrescriptionNumber.getText()), hospitalType, patienttype, createPrescriptionPatientDiagnostic.getText(),
+        createPrescriptionBirthDate.getValue(), gender, createPrescriptionNationalityTextField.getText(), new ArrayList<PrescriptionDrug>());
+
+    ObservableList<CreatePrescriptionTableFormat> rowList = prescriptMedicamentTable.getItems();
+    rowList.forEach(entity -> prescription.getPrescriptionDrugs().add(transform(entity)));
+
+    return prescription;
+  }
+
+  private static PrescriptionDrug transform(CreatePrescriptionTableFormat tableFormat) {
+    PrescriptionDrug prescriptionDrug = new PrescriptionDrug();
+    prescriptionDrug.setDays(Integer.valueOf(tableFormat.getDays()));
+    prescriptionDrug.setDescription(tableFormat.getObservations());
+    prescriptionDrug.setDrug(tableFormat.getName());
+    prescriptionDrug.setPillsNumber(Integer.valueOf(tableFormat.getNumber()));
+    return prescriptionDrug;
   }
 }

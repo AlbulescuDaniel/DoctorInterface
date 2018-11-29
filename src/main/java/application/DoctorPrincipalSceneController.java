@@ -1,10 +1,12 @@
 package application;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import entity.Prescription;
+import entity.PrescriptionDoctorHospital;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +23,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import request.AutocompletePrescriptionRequest;
+import request.CreatePrescriptionRequest;
 import request.PrescriptionsTabRequest;
 import table.CreatePrescriptionTableControl;
 import table.CreatePrescriptionTableFormat;
@@ -252,7 +256,7 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private TextField createPrescriptionCNP;
-  
+
   @FXML
   private TextField createPrescriptionNationalityTextField;
 
@@ -362,7 +366,7 @@ public class DoctorPrincipalSceneController {
         List<Prescription> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(), datepickerTo.getValue());
         PatientPrescriptionsTableControl.initializePrescriptionTable(prescriptions, table, diagnostic, days, prescriptionDate, prescriptionTableId);
       }
-      catch (Exception e) {
+      catch (IOException e) {
       }
     });
 
@@ -372,8 +376,30 @@ public class DoctorPrincipalSceneController {
 
     createPrescriptionButton.setOnAction(event -> {
       Prescription prescription = CreatePrescriptionTableControl.getPrescription(prescriptMedicamentTable, createPrescriptionNumber, createPrescriptionHospitalName, createPrescriptionStateTextField,
-          createPrescriptionURCTextField, createPrescriptionHospitalPhone, createPrescriptionDoctorEmail, createPrescriptionFirstName, createPrescriptionLastName,
-          createPrescriptionCNP, createPrescriptionBirthDate, createPrescriptionPatientDiagnostic, createPrescriptionNationalityTextField, createPrescriptionGender, createPrescriptionType, createPatientInstitution);
+          createPrescriptionURCTextField, createPrescriptionHospitalPhone, createPrescriptionDoctorEmail, createPrescriptionFirstName, createPrescriptionLastName, createPrescriptionCNP,
+          createPrescriptionBirthDate, createPrescriptionPatientDiagnostic, createPrescriptionNationalityTextField, createPrescriptionGender, createPrescriptionType, createPatientInstitution);
+      System.err.println(prescription);
+      try {
+        CreatePrescriptionRequest.createPrescriptionRequest(createPrescriptionFirstName.getText(), createPrescriptionLastName.getText(), token, prescription);
+      }
+      catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    });
+
+    createPrescriptionDoctorAutocomplete.setOnAction(event -> {
+      try {
+        PrescriptionDoctorHospital prescriptionDoctorHospital = AutocompletePrescriptionRequest.autocompleteRequest(token);
+        createPrescriptionNumber.setText(prescriptionDoctorHospital.getPrescriptionNumber().toString());
+        createPrescriptionHospitalName.setText(prescriptionDoctorHospital.getHospitalName());
+        createPrescriptionURCTextField.setText(prescriptionDoctorHospital.getHospitalURC());
+        createPrescriptionStateTextField.setText(prescriptionDoctorHospital.getHospitalState());
+        createPrescriptionHospitalPhone.setText(prescriptionDoctorHospital.getHospitalPhone());
+        createPrescriptionDoctorEmail.setText(prescriptionDoctorHospital.getDoctorEmail());
+      }
+      catch (IOException e) {
+      }
     });
     //
     // populatePharmaciesTableButton.setOnAction(new EventHandler<ActionEvent>() {

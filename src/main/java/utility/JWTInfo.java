@@ -13,9 +13,11 @@ public class JWTInfo {
   private String user;
   private String role;
   private LocalDateTime expirationDate;
+  private String token;
 
   public JWTInfo(String token) {
     super();
+    this.token = token;
     Jws<Claims> claims = null;
     try {
       claims = Jwts.parser().setSigningKey("{noop}ThisIsASecret").parseClaimsJws(token.replaceAll("Bearer ", ""));
@@ -39,6 +41,10 @@ public class JWTInfo {
     return expirationDate;
   }
 
+  public String getToken() {
+    return token;
+  }
+  
   @Override
   public String toString() {
     return "user = " + user + "\nrole = " + role + "\nexpirationDate = " + expirationDate;

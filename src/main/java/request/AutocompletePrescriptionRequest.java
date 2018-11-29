@@ -5,38 +5,40 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import constant.Consts;
-import entity.Prescription;
+import entity.PrescriptionDoctorHospital;
 import utility.CustomAlerts;
+import utility.JWTInfo;
+import utility.Utility;
 
-public class PrescriptionsTabRequest {
-
-  private PrescriptionsTabRequest() {
+public class AutocompletePrescriptionRequest {
+  private AutocompletePrescriptionRequest() {
   }
 
-  public static List<Prescription> requestFillPrescriptionTable(String firstName, String lastName, LocalDate from, LocalDate to) throws IOException {
+  public static PrescriptionDoctorHospital autocompleteRequest(JWTInfo token) throws IOException {
     // if (!new Utility().isOnline()) {
     // CustomAlerts.showInternetErrorConnectionAlert();
     // throw new IOException();
     // }
 
-    from = from.minusDays(1);
-    to = to.plusDays(1);
-
-    URL obj = new URL(Consts.FILL_PRESCRIPTION_TABLE_URL + "?firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + from + "&endDate=" + to);
+    URL obj = new URL(Consts.AUTOFILL_PRESCRIPTION_URL + "?userName=" + token.getUser());
 
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();
     con.setRequestMethod("GET");
+    con.setRequestProperty("Content-Type", "application/json");
+    con.setRequestProperty("Accept", "application/json");
+    con.setRequestProperty("Authorization", token.getToken());
 
     try {
       con.connect();
@@ -47,6 +49,7 @@ public class PrescriptionsTabRequest {
     }
 
     if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
       String inputLine;
       StringBuilder response = new StringBuilder();
@@ -55,31 +58,21 @@ public class PrescriptionsTabRequest {
         response.append(inputLine);
       }
       in.close();
-
-      JSONArray jsonArray = new JSONArray(response.toString());
-      List<Prescription> prescriptions = new ArrayList<>();
-      for (Object object : jsonArray) {
-        Gson gson = new GsonBuilder().create();
-        prescriptions.add(gson.fromJson(object.toString().trim(), Prescription.class));
-      }
-
-      if (prescriptions.isEmpty()) {
-        CustomAlerts.showemptyPrescriptionListAlert();
-        throw new IOException();
-      }
-
-      return prescriptions;
+      
+      Gson gson = new GsonBuilder().create();
+      
+      return gson.fromJson(response.toString().trim(), PrescriptionDoctorHospital.class);
     }
     else if (con.getResponseCode() == 503) {
       CustomAlerts.showServiceUnavailableAlert();
       throw new IOException();
     }
     else if (con.getResponseCode() == 404) {
-      CustomAlerts.showPatientDoesNotExistAlert();
+      CustomAlerts.showDoctorDoesNotExistAlert();
       throw new IOException();
     }
     else {
-      return Collections.emptyList();
+      return null;
     }
   }
 }

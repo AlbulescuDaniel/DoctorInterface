@@ -3,7 +3,6 @@ package entity;
 public class PrescriptionDrug {
   
   private Long id;
-  private Boolean checked;
   private String description;
   private Integer pillsNumber;
   private String drug;
@@ -15,14 +14,6 @@ public class PrescriptionDrug {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Boolean getChecked() {
-    return checked;
-  }
-
-  public void setChecked(Boolean checked) {
-    this.checked = checked;
   }
 
   public String getDescription() {
@@ -61,10 +52,9 @@ public class PrescriptionDrug {
     super();
   }
 
-  public PrescriptionDrug(Long id, Boolean checked, String description, Integer pillsNumber, String drug, Integer days) {
+  public PrescriptionDrug(Long id, String description, Integer pillsNumber, String drug, Integer days) {
     super();
     this.id = id;
-    this.checked = checked;
     this.description = description;
     this.pillsNumber = pillsNumber;
     this.drug = drug;
@@ -73,6 +63,6 @@ public class PrescriptionDrug {
 
   @Override
   public String toString() {
-    return "PrescriptionDrug [id=" + id + ", checked=" + checked + ", description=" + description + ", pillsNumber=" + pillsNumber + ", drug=" + drug + ", days=" + days + "]";
+    return "PrescriptionDrug [id=" + id + ", description=" + description + ", pillsNumber=" + pillsNumber + ", drug=" + drug + ", days=" + days + "]";
   }
 }

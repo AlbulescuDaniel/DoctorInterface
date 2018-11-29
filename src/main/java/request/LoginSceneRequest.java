@@ -14,7 +14,7 @@ import utility.JWTInfo;
 import utility.Utility;
 
 public class LoginSceneRequest {
-
+  
   public JWTInfo sendLogInDoctorPOST(String email, String password) throws IOException {
 //     if (!new Utility().isOnline()) {
 //     CustomAlerts.showInternetErrorConnectionAlert();
@@ -53,7 +53,6 @@ public class LoginSceneRequest {
       throw new IOException();
     }
     else {
-      System.err.println(con.getResponseCode());
       return null;
     }
 

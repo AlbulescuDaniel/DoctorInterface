@@ -34,7 +34,7 @@ public class DoctorLoginController {
   private void initialize() {
 
     userNameTextField.setText("abc");
-    passwordField.setText("1!aA1111");
+    passwordField.setText("aA1!aaaa");
     datesGrid.getStyleClass().add("dates-grid");
 
     logInButton.setOnAction(event -> {

@@ -26,7 +26,7 @@ public class Main extends Application {
   public void showLoginView() {
     Scene scene;
     try {
-      scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/DoctorPrincipalScene.fxml")));
+      scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/DoctorLogin.fxml")));
       scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
       primaryStage.setScene(scene);
       primaryStage.setWidth(1200);
