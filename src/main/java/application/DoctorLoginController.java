@@ -44,7 +44,6 @@ public class DoctorLoginController {
         @Override
         protected JWTInfo call() throws Exception {
           parsedJWT = new LoginSceneRequest().sendLogInDoctorPOST(userNameTextField.getText(), passwordField.getText());
-          System.err.println("auci");
           try {
             if (parsedJWT != null) {
               Main.showPrincipalDoctorView(parsedJWT);

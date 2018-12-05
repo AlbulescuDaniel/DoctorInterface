@@ -1,14 +1,20 @@
 package request;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
 import constant.Consts;
 import entity.Prescription;
@@ -26,7 +32,7 @@ public class CreatePrescriptionRequest {
     // throw new IOException();
     // }
 
-    URL object = new URL(Consts.CREATE_PRESCRIPTION_URL + "?firstName=" + firstName + "&lastName=" + lastName);
+    URL object = new URL(Consts.LOCAL_SERVER ? Consts.CREATE_PRESCRIPTION_URL : Consts.OPENSHIFT_CREATE_PRESCRIPTION_URL + "?firstName=" + firstName + "&lastName=" + lastName);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();
     con.setDoOutput(true);
     con.setDoInput(true);
@@ -39,6 +45,16 @@ public class CreatePrescriptionRequest {
     }
     catch (Exception e) {
       CustomAlerts.showServerErrorConnectionAlert();
+    }
+
+    if (prescription.getPrescriptionDrugs().isEmpty()) {
+      CustomAlerts.showNoDrugslert();
+      throw new IOException();
+    }
+
+    if (Instant.ofEpochMilli(prescription.getDatePrescripted().getTime()).atZone(ZoneId.systemDefault()).toLocalDate().isAfter(LocalDate.now())) {
+      CustomAlerts.showFutureDateAlert();
+      throw new IOException();
     }
 
     JSONObject jsonResponse = new JSONObject();
@@ -62,24 +78,26 @@ public class CreatePrescriptionRequest {
 
     jsonResponse.put("prescriptionDrugs", array);
 
-    System.out.println(jsonResponse);
-
     OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
     wr.write(jsonResponse.toString());
     wr.flush();
 
-    if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-      System.err.println("created");
+    if (con.getResponseCode() == 201) {
+      CustomAlerts.showPrescriptionCreatedAlert(firstName, lastName);
     }
     else if (con.getResponseCode() == 503) {
       CustomAlerts.showServiceUnavailableAlert();
     }
     else if (con.getResponseCode() == 404) {
-      System.err.println(con.getResponseCode());
+
+      Gson gson = new Gson();
+
+      JsonReader reader = new JsonReader(new InputStreamReader(con.getErrorStream()));
+      JsonObject response = gson.fromJson(reader, JsonObject.class);
+      CustomAlerts.showPresciptionDatabaseAlert(response.get("details").toString().replace("[", "").replace("]", ""));
     }
     else {
       System.err.println(con.getResponseCode());
-
     }
   }
 

@@ -1,5 +1,9 @@
 package table;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import entity.Prescription;
@@ -24,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import utility.CustomAlerts;
 
 public class CreatePrescriptionTableControl {
   private CreatePrescriptionTableControl() {
@@ -152,10 +157,9 @@ public class CreatePrescriptionTableControl {
 
   public static Prescription getPrescription(TableView<CreatePrescriptionTableFormat> prescriptMedicamentTable, TextField createPrescriptionNumber, TextField createPrescriptionHospitalName,
       TextField createPrescriptionStateTextField, TextField createPrescriptionURCTextField, TextField createPrescriptionHospitalPhone, TextField createPrescriptionDoctorEmail,
-      TextField createPrescriptionFirstName, TextField createPrescriptionLastName, TextField createPrescriptionCNP, DatePicker createPrescriptionBirthDate,
-      TextArea createPrescriptionPatientDiagnostic, TextField createPrescriptionNationalityTextField, ToggleGroup createPrescriptionGender, ToggleGroup createPrescriptionType,
-      ToggleGroup createPatientInstitution) {
-
+      TextField createPrescriptionFirstName, TextField createPrescriptionLastName, TextField createPrescriptionCNP, DatePicker createPrescriptionPrescriptionDate,
+      DatePicker createPrescriptionBirthDate, TextArea createPrescriptionPatientDiagnostic, TextField createPrescriptionNationalityTextField, ToggleGroup createPrescriptionGender,
+      ToggleGroup createPrescriptionType, ToggleGroup createPatientInstitution) throws IOException {
     RadioButton button = (RadioButton)createPatientInstitution.getSelectedToggle();
     String hospitalType = button.getText();
 
@@ -165,13 +169,27 @@ public class CreatePrescriptionTableControl {
     button = (RadioButton)createPrescriptionGender.getSelectedToggle();
     UserGender gender = button.getText().equals("M") ? UserGender.Male : UserGender.Female;
 
+    if (createPrescriptionNumber.getText().equals("") || createPrescriptionPatientDiagnostic.getText().equals("") || createPrescriptionNationalityTextField.getText().equals("")
+        || createPrescriptionHospitalName.getText().equals("") || createPrescriptionStateTextField.getText().equals("") || createPrescriptionURCTextField.getText().equals("")
+        || createPrescriptionHospitalPhone.getText().equals("") || createPrescriptionDoctorEmail.getText().equals("") || createPrescriptionFirstName.getText().equals("")
+        || createPrescriptionLastName.getText().equals("") || createPrescriptionCNP.getText().equals("")) {
+      CustomAlerts.showEmptyFieldsAlert();
+      throw new IOException();
+    }
+
     Prescription prescription = new Prescription(Long.valueOf(1), Long.valueOf(createPrescriptionNumber.getText()), hospitalType, patienttype, createPrescriptionPatientDiagnostic.getText(),
-        createPrescriptionBirthDate.getValue(), gender, createPrescriptionNationalityTextField.getText(), new ArrayList<PrescriptionDrug>());
+        createPrescriptionPrescriptionDate.getValue(), gender, createPrescriptionNationalityTextField.getText(), new ArrayList<PrescriptionDrug>());
 
     ObservableList<CreatePrescriptionTableFormat> rowList = prescriptMedicamentTable.getItems();
     rowList.forEach(entity -> prescription.getPrescriptionDrugs().add(transform(entity)));
 
+    if (createPrescriptionBirthDate.getValue().isAfter(LocalDate.now())) {
+      CustomAlerts.showFutureDateAlert();
+      throw new IOException();
+    }
+
     return prescription;
+
   }
 
   private static PrescriptionDrug transform(CreatePrescriptionTableFormat tableFormat) {

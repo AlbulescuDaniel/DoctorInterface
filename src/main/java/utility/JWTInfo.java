@@ -44,9 +44,9 @@ public class JWTInfo {
   public String getToken() {
     return token;
   }
-  
+
   @Override
   public String toString() {
-    return "user = " + user + "\nrole = " + role + "\nexpirationDate = " + expirationDate;
+    return "JWTInfo [user=" + user + ", role=" + role + ", expirationDate=" + expirationDate + ", token=" + token + "]";
   }
 }

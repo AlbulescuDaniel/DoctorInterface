@@ -1,11 +1,12 @@
 package table;
 
-import java.time.ZoneId;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import entity.Prescription;
+import entity.PrescriptionDetails;
 import entity.PrescriptionDrug;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +17,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import request.PrescriptionDetailsRequest;
+import utility.JWTInfo;
 
 public class PatientPrescriptionsTableControl {
 
@@ -26,8 +29,8 @@ public class PatientPrescriptionsTableControl {
       TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate,
       TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     prescriptionTableId.setPrefWidth(0d);
+    
     pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
-
       table.setPrefWidth(newSceneWidth.doubleValue() - 40);
       diagnostic.setPrefWidth(table.getPrefWidth() * 70 / 100);
       days.setPrefWidth(table.getPrefWidth() / 10);
@@ -55,23 +58,6 @@ public class PatientPrescriptionsTableControl {
     days.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, String>("days"));
     prescriptionDate.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, Date>("datePrescripted"));
     diagnostic.setCellValueFactory(new PropertyValueFactory<PatientPrescriptionsTableFormat, String>("diagnostic"));
-  }
-
-  public static void prescriptionTableRowEvent(TableView<PatientPrescriptionsTableFormat> table, GridPane gridPanePrescription, GridPane gridPanelTable) {
-    table.setRowFactory(e -> {
-      TableRow<PatientPrescriptionsTableFormat> row = new TableRow<>();
-      row.setOnMouseClicked(event -> {
-        if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-          PatientPrescriptionsTableFormat clickedRow = row.getItem();
-          Long id = clickedRow.getId();
-          System.err.println(id);
-          gridPanePrescription.setVisible(true);
-          gridPanelTable.setVisible(false);
-          // moveToPrescriptionGrid(prescription);
-        }
-      });
-      return row;
-    });
   }
 
   private static String createMedicationString(List<PrescriptionDrug> prescriptionDrugs) {

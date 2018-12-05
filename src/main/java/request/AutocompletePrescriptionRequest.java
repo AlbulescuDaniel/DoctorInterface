@@ -32,7 +32,7 @@ public class AutocompletePrescriptionRequest {
     // throw new IOException();
     // }
 
-    URL obj = new URL(Consts.AUTOFILL_PRESCRIPTION_URL + "?userName=" + token.getUser());
+    URL obj = new URL(Consts.LOCAL_SERVER ? Consts.AUTOFILL_PRESCRIPTION_URL : Consts.OPENSHIFT_AUTOFILL_PRESCRIPTION_URL + "?userName=" + token.getUser());
 
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();
     con.setRequestMethod("GET");

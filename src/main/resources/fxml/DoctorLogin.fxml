@@ -36,7 +36,7 @@
 						<RowConstraints maxHeight="268.0" minHeight="10.0" prefHeight="113.60000000000002" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Label alignment="BOTTOM_LEFT" graphicTextGap="9.0" text="Am Proiect" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+						<Label alignment="BOTTOM_LEFT" graphicTextGap="9.0" text="Your Health" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
 							<font>
 								<Font name="MT Extra" size="32.0" />
 							</font>

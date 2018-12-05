@@ -21,7 +21,7 @@ public class LoginSceneRequest {
 //     throw new IOException();
 //     }
 
-    URL object = new URL(Consts.LOGIN_URL);
+    URL object = new URL(Consts.LOCAL_SERVER ? Consts.LOGIN_URL : Consts.OPENSHIFT_LOGIN_URL);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();
     con.setDoOutput(true);
     con.setDoInput(true);

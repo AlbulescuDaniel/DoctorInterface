@@ -16,6 +16,10 @@ public class Prescription {
   private String nationality;
   private List<PrescriptionDrug> prescriptionDrugs;
 
+  public Prescription() {
+    super();
+  }
+
   public Long getId() {
     return id;
   }
