@@ -28,6 +28,7 @@ public class DoctorLoginController {
 
   @FXML
   private Text errorText;
+  
   private JWTInfo parsedJWT;
 
   @FXML

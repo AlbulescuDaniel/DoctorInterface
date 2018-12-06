@@ -6,10 +6,7 @@ public class Consts {
     throw new AssertionError();
   }
 
-  public static final String TRUE_VALUE = "true";
-  public static final String FALSE_VALUE = "false";
-  
-  public static final Boolean LOCAL_SERVER = false;
+  public static final Boolean LOCAL_SERVER = true;
 
   public static final String LOGIN_URL = "http://localhost:8080/login";
   public static final String OPENSHIFT_LOGIN_URL = "http://licenta-licenta.193b.starter-ca-central-1.openshiftapps.com/login";

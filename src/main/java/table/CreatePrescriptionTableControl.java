@@ -130,21 +130,22 @@ public class CreatePrescriptionTableControl {
 
   public static void setHeight(GridPane pane, RowConstraints createPrescriptionComponentsGridRow, ScrollPane createPrescriptionScrollPane, GridPane createPrescriptionGridPane,
       AnchorPane createPrescriptionAnchorPane) {
-    pane.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) -> {
 
-      if (createPrescriptionComponentsGridRow.getPrefHeight() <= 560) {
-        if (createPrescriptionComponentsGridRow.getPrefHeight() < 400) {
-          createPrescriptionGridPane.setPrefHeight(400);
-          createPrescriptionComponentsGridRow.setPrefHeight(400);
-          createPrescriptionScrollPane.setPrefHeight(400);
-          createPrescriptionAnchorPane.setPrefHeight(400);
-        }
-        else {
-          createPrescriptionGridPane.setPrefHeight(540);
-          createPrescriptionComponentsGridRow.setPrefHeight(540);
-          createPrescriptionScrollPane.setPrefHeight(540);
-          createPrescriptionAnchorPane.setPrefHeight(540);
-        }
+    Double minHeight = Double.valueOf(400);
+    Double prefHeight = Double.valueOf(540);
+
+    createPrescriptionGridPane.setMinHeight(minHeight);
+    createPrescriptionComponentsGridRow.setMinHeight(minHeight);
+    createPrescriptionScrollPane.setMinHeight(minHeight);
+    createPrescriptionAnchorPane.setMinHeight(minHeight);
+
+    pane.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) -> {
+      Double newuPrefHeight = newSceneHeight.doubleValue() * Double.valueOf(54 / 100d);
+      if(newuPrefHeight <= prefHeight) {
+        System.err.println(newuPrefHeight);
+        createPrescriptionComponentsGridRow.setMinHeight(newuPrefHeight);
+        createPrescriptionScrollPane.setMinHeight(newuPrefHeight);
+        createPrescriptionGridPane.setPrefHeight(newuPrefHeight);
       }
     });
   }

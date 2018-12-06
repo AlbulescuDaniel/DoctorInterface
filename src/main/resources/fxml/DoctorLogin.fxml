@@ -59,7 +59,7 @@
 										<Insets top="10.0" />
 									</GridPane.margin>
 								</TextField>
-								<Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="E-mail Adress" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+								<Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Username" GridPane.halignment="LEFT" GridPane.valignment="TOP">
 									<font>
 										<Font name="Arial Black" size="14.0" />
 									</font>
