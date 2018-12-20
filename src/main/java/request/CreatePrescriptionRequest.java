@@ -32,7 +32,7 @@ public class CreatePrescriptionRequest {
     // throw new IOException();
     // }
 
-    URL object = new URL(Consts.LOCAL_SERVER ? Consts.CREATE_PRESCRIPTION_URL : Consts.OPENSHIFT_CREATE_PRESCRIPTION_URL + "?firstName=" + firstName + "&lastName=" + lastName);
+    URL object = new URL((Consts.LOCAL_SERVER ? Consts.CREATE_PRESCRIPTION_URL : Consts.OPENSHIFT_CREATE_PRESCRIPTION_URL) + "?firstName=" + firstName + "&lastName=" + lastName);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();
     con.setDoOutput(true);
     con.setDoInput(true);

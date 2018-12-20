@@ -1,24 +1,18 @@
 package table;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import entity.Prescription;
-import entity.PrescriptionDetails;
 import entity.PrescriptionDrug;
+import entity.PrescriptionWithPatientName;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import request.PrescriptionDetailsRequest;
-import utility.JWTInfo;
 
 public class PatientPrescriptionsTableControl {
 
@@ -29,7 +23,7 @@ public class PatientPrescriptionsTableControl {
       TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate,
       TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     prescriptionTableId.setPrefWidth(0d);
-    
+
     pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
       table.setPrefWidth(newSceneWidth.doubleValue() - 40);
       diagnostic.setPrefWidth(table.getPrefWidth() * 70 / 100);
@@ -38,7 +32,7 @@ public class PatientPrescriptionsTableControl {
     });
   }
 
-  public static void initializePrescriptionTable(List<Prescription> prescriptions, TableView<PatientPrescriptionsTableFormat> table, TableColumn<PatientPrescriptionsTableFormat, String> diagnostic,
+  public static void initializePrescriptionTable(List<PrescriptionWithPatientName> prescriptions, TableView<PatientPrescriptionsTableFormat> table, TableColumn<PatientPrescriptionsTableFormat, String> diagnostic,
       TableColumn<PatientPrescriptionsTableFormat, String> days, TableColumn<PatientPrescriptionsTableFormat, Date> prescriptionDate,
       TableColumn<PatientPrescriptionsTableFormat, Long> prescriptionTableId) {
     days.setStyle("-fx-padding: 0 0 0 10;");

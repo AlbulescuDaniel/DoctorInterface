@@ -8,7 +8,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 
@@ -16,16 +18,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import constant.Consts;
-import entity.Prescription;
+import entity.PrescriptionWithPatientName;
+import entity.UserDetailsFromPrescriptions;
 import utility.CustomAlerts;
 import utility.JWTInfo;
 
 public class PrescriptionsTabRequest {
 
+  static Boolean ok = true;
+
   private PrescriptionsTabRequest() {
   }
 
-  public static List<Prescription> requestFillPrescriptionTable(String firstName, String lastName, LocalDate from, LocalDate to, JWTInfo token) throws IOException {
+  public static List<PrescriptionWithPatientName> requestFillPrescriptionTable(String firstName, String lastName, LocalDate from, LocalDate to, JWTInfo token) throws IOException {
     // if (!new Utility().isOnline()) {
     // CustomAlerts.showInternetErrorConnectionAlert();
     // throw new IOException();
@@ -34,8 +39,8 @@ public class PrescriptionsTabRequest {
     from = from.minusDays(1);
     to = to.plusDays(1);
 
-    URL obj = new URL(Consts.LOCAL_SERVER ? Consts.FILL_PRESCRIPTION_TABLE_URL
-        : Consts.OPENSHIFT_FILL_PRESCRIPTION_TABLE_URL + "?firstName=" + firstName + "&lastName=" + lastName + "&startDate=" + from + "&endDate=" + to);
+    URL obj = new URL((Consts.LOCAL_SERVER ? Consts.FILL_PRESCRIPTION_TABLE_URL : Consts.OPENSHIFT_FILL_PRESCRIPTION_TABLE_URL) + "?firstName=" + firstName + "&lastName=" + lastName + "&startDate="
+        + from + "&endDate=" + to);
 
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();
     con.setRequestMethod("GET");
@@ -51,6 +56,11 @@ public class PrescriptionsTabRequest {
       throw new IOException();
     }
 
+    if (firstName.equals("")) {
+      CustomAlerts.showEmptyFieldsAlert();
+      throw new IOException();
+    }
+
     if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
       String inputLine;
@@ -62,10 +72,10 @@ public class PrescriptionsTabRequest {
       in.close();
 
       JSONArray jsonArray = new JSONArray(response.toString());
-      List<Prescription> prescriptions = new ArrayList<>();
+      List<PrescriptionWithPatientName> prescriptions = new ArrayList<>();
       for (Object object : jsonArray) {
         Gson gson = new GsonBuilder().create();
-        prescriptions.add(gson.fromJson(object.toString().trim(), Prescription.class));
+        prescriptions.add(gson.fromJson(object.toString().trim(), PrescriptionWithPatientName.class));
       }
 
       if (prescriptions.isEmpty()) {
@@ -73,7 +83,15 @@ public class PrescriptionsTabRequest {
         throw new IOException();
       }
 
-      return prescriptions;
+      Set<UserDetailsFromPrescriptions> userDetailsFromPrescriptions = new HashSet<>();
+      prescriptions.forEach(p -> userDetailsFromPrescriptions.add(new UserDetailsFromPrescriptions(p.getPatientFirstName(), p.getPatientLastName(), p.getBirthDate(), p.getUserGender())));
+
+      if (userDetailsFromPrescriptions.size() == 1) {
+        return prescriptions;
+      }
+      else {
+        return CustomAlerts.showemptyPatientMultipleAlert(userDetailsFromPrescriptions, prescriptions);
+      }
     }
     else if (con.getResponseCode() == 503) {
       CustomAlerts.showServiceUnavailableAlert();

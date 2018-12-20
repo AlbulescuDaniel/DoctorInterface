@@ -5,15 +5,21 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import entity.Address;
 import entity.CreatePatientDTO;
+import entity.Drug;
 import entity.Prescription;
 import entity.PrescriptionDetails;
 import entity.PrescriptionDoctorHospital;
+import entity.PrescriptionWithPatientName;
 import entity.UserGender;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -24,6 +30,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -31,12 +38,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import request.AutocompletePrescriptionRequest;
 import request.CreatePrescriptionRequest;
+import request.DrugProspectumRequest;
 import request.PrescriptionDetailsRequest;
 import request.PrescriptionsTabRequest;
 import request.RegisterPatientRequest;
 import table.CreatePrescriptionTableControl;
 import table.CreatePrescriptionTableFormat;
-import table.MedicamentsTableControl;
 import table.PatientPrescriptionsTableControl;
 import table.PatientPrescriptionsTableFormat;
 import table.PrescriptionDetailsTableControl;
@@ -49,6 +56,9 @@ public class DoctorPrincipalSceneController {
   private GridPane pane;
 
   @FXML
+  private GridPane drugDetailsGridPane;
+
+  @FXML
   private ColumnConstraints createPrescriptionGridColumn;
 
   @FXML
@@ -58,11 +68,17 @@ public class DoctorPrincipalSceneController {
   private GridPane createPrescriptionGridPane;
 
   @FXML
+  private GridPane medicationTabGridMessage;
+
+  @FXML
   private ScrollPane createPrescriptionScrollPane;
 
   @FXML
+  private ScrollPane drugsDetailsScrollPane;
+
+  @FXML
   private AnchorPane createPrescriptionAnchorPane;
-  
+
   @FXML
   private AnchorPane registerPatientAnchorPane;
 
@@ -88,6 +104,9 @@ public class DoctorPrincipalSceneController {
   private Button createPrescriptionButton;
 
   @FXML
+  private Button drugSearchButton;
+
+  @FXML
   private TableView<PatientPrescriptionsTableFormat> table;
 
   @FXML
@@ -95,10 +114,6 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private TableView<CreatePrescriptionTableFormat> medicamentTable;
-
-  // @FXML
-  // private TableView<PharmacyTableCompletation> pharmaciesTable;
-  //
 
   @FXML
   private TableColumn<CreatePrescriptionTableFormat, String> prescriptMedicamentName;
@@ -138,30 +153,6 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private TableColumn<CreatePrescriptionTableFormat, String> daysLabel;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn pharmacyName;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn pharmacyCity;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn pharmacyStreet;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn pharmacyStreetNumber;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn pharmacyPhone;
-
-  @SuppressWarnings("rawtypes")
-  @FXML
-  private TableColumn medicamentPrce;
 
   @FXML
   private DatePicker datepickerFrom;
@@ -351,19 +342,70 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private TextField persolanlIdNumberregister;
-  
+
   @FXML
   private TextField nationalityRegister;
-  
+
   @FXML
   private ColumnConstraints registerPatientFieldsColumn;
 
-  private JWTInfo token;
+  @FXML
+  private TextField drugName;
+
+  @FXML
+  private Label drugCompozition;
+
+  @FXML
+  private Label drugPharmaceuticalForm;
+
+  @FXML
+  private Label drugTherapeuticIndications;
+
+  @FXML
+  private Label drugAdministrattion;
+
+  @FXML
+  private Label drugWarnings;
+
+  @FXML
+  private Label drugOverdose;
+
+  @FXML
+  private Label drugPharmacokineticProperties;
+
+  @FXML
+  private Label drugExcipients;
+
+  @FXML
+  private Label drugIncompatibilities;
+
+  @FXML
+  private Label drugShelfLife;
+
+  @FXML
+  private Label drugSpecialPrecautions;
+
+  @FXML
+  private Label drugMarketing;
+
+  @FXML
+  private TextField searchBoxDrugName;
+
+  @FXML
+  private Label taskBarUserName;
+
+  @FXML
+  private ComboBox<String> logOutComboBox;
+  
+  @FXML
+  private ImageView imageViewBackground;
 
   private ToggleGroup createPatientGender;
   private ToggleGroup createPrescriptionGender;
   private ToggleGroup createPrescriptionType;
   private ToggleGroup createPatientInstitution;
+
+  private JWTInfo token;
 
   public void setToken(JWTInfo token) {
     this.token = token;
@@ -372,6 +414,8 @@ public class DoctorPrincipalSceneController {
   @FXML
   private void initialize() {
     gridPanePrescription.setVisible(false);
+    drugDetailsGridPane.setVisible(false);
+    taskBarUserName.setText(WordUtils.capitalizeFully(token.getUser().replaceAll("\\d", "").replace(".", " ")));
     datepickerFrom.setValue(LocalDate.now().minusYears(1));
     datepickerTo.setValue(LocalDate.now());
     createToggleGroups();
@@ -385,7 +429,6 @@ public class DoctorPrincipalSceneController {
     CreatePrescriptionTableControl.setHeight(pane, createPrescriptionComponentsGridRow, createPrescriptionScrollPane, createPrescriptionGridPane, createPrescriptionAnchorPane);
     CreatePrescriptionTableControl.init(prescriptMedicamentTable, prescriptMedicamentName, createPrescriptionNumberColumn, prescriptMedicamentPrescriptedDays, prescriptMedicamentPillsPerDay,
         prescriptMedicamentObservations);
-    MedicamentsTableControl.setWidth(pane, pharmacyName, pharmacyCity, pharmacyStreet, pharmacyStreetNumber, pharmacyPhone, medicamentPrce);
 
     button.setOnAction(event -> {
       gridPanePrescription.setVisible(false);
@@ -394,7 +437,7 @@ public class DoctorPrincipalSceneController {
 
     populateTableButton.setOnAction(event -> {
       try {
-        List<Prescription> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(), datepickerTo.getValue(),
+        List<PrescriptionWithPatientName> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(), datepickerTo.getValue(),
             token);
         PatientPrescriptionsTableControl.initializePrescriptionTable(prescriptions, table, diagnostic, days, prescriptionDate, prescriptionTableId);
       }
@@ -420,7 +463,6 @@ public class DoctorPrincipalSceneController {
     createPrescriptionDoctorAutocomplete.setOnAction(event -> {
       try {
         PrescriptionDoctorHospital prescriptionDoctorHospital = AutocompletePrescriptionRequest.autocompleteRequest(token);
-
         createPrescriptionNumber.setText(prescriptionDoctorHospital.getPrescriptionNumber().toString());
         createPrescriptionHospitalName.setText(prescriptionDoctorHospital.getHospitalName());
         createPrescriptionURCTextField.setText(prescriptionDoctorHospital.getHospitalURC());
@@ -434,6 +476,18 @@ public class DoctorPrincipalSceneController {
 
     table.setRowFactory(e -> {
       TableRow<PatientPrescriptionsTableFormat> row = new TableRow<>();
+
+      row.hoverProperty().addListener(observable -> {
+        final PatientPrescriptionsTableFormat person = row.getItem();
+
+        if (row.isHover() && person != null) {
+          row.setStyle("-fx-border-color: lightgray; -fx-background-color: gray;");
+        }
+        if (!row.isHover()) {
+          row.setStyle("-fx-background-color: linear-gradient(white 0%, white 90%, #e0e0e0 90%);");
+        }
+      });
+
       row.setOnMouseClicked(event -> {
         if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
           PatientPrescriptionsTableFormat clickedRow = row.getItem();
@@ -461,12 +515,57 @@ public class DoctorPrincipalSceneController {
         RegisterPatientRequest.registerPatientRequest(token,
             new CreatePatientDTO(emailRegister.getText(), phoneRegister.getText(), firstNameRegister.getText(), lasNameRegister.getText(), persolanlIdNumberregister.getText(),
                 registerPatientDatePicker.getValue(), createPatientGenderButton.getText().equals("M") ? UserGender.Male : UserGender.Female,
-                new Address(countryRegister.getText(), postalCodeRegister.getText(), cityRegister.getText(), regionRegister.getText(), streetRegister.getText(), streetNumberRegister.getText()), nationalityRegister.getText()));
+                new Address(countryRegister.getText(), postalCodeRegister.getText(), cityRegister.getText(), regionRegister.getText(), streetRegister.getText(), streetNumberRegister.getText()),
+                nationalityRegister.getText()));
       }
       catch (IOException e) {
       }
     });
 
+    pane.widthProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) -> {
+      drugDetailsGridPane.setPrefWidth(newSceneWidth.doubleValue() - 40);
+      searchBoxDrugName.setPrefWidth(newSceneWidth.doubleValue() * (25d / 100));
+      imageViewBackground.setFitWidth(newSceneWidth.doubleValue());
+    });
+    
+    pane.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) -> {
+      imageViewBackground.setFitHeight(newSceneHeight.doubleValue() - 70);
+    });
+
+    drugName.getStyleClass().add("copyable-label");
+    
+    drugSearchButton.setOnAction(event -> {
+      try {
+        Drug drug = DrugProspectumRequest.drugProspectumRequest(searchBoxDrugName.getText(), token);
+        drugName.setText(drug.getName());
+        drugCompozition.setText(drug.getComposition());
+        drugPharmaceuticalForm.setText(drug.getPharmaceuticalForm());
+        drugTherapeuticIndications.setText(drug.getTherapeuticIndications());
+        drugAdministrattion.setText(drug.getAdministrationMethod());
+        drugWarnings.setText(drug.getSpecialWarnings());
+        drugOverdose.setText(drug.getOverdose());
+        drugPharmacokineticProperties.setText(drug.getPharmacokineticProperties());
+        drugExcipients.setText(drug.getExcipients());
+        drugIncompatibilities.setText(drug.getIncompatibilities());
+        drugShelfLife.setText(drug.getShelfLife());
+        drugSpecialPrecautions.setText(drug.getSpecialPrecautionsForStorage());
+        drugMarketing.setText(drug.getMarketingAuthorisationHolder());
+        drugDetailsGridPane.setVisible(true);
+        System.out.println("ajunge");
+        medicationTabGridMessage.setVisible(false);
+      }
+      catch (IOException e1) {
+      }
+    });
+
+    logOutComboBox.setItems(FXCollections.observableArrayList("Logout", "Profile"));
+
+    logOutComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal.equals("Logout")) {
+        this.setToken(null);
+        Main.showLoginView();
+      }
+    });
   }
 
   private void createToggleGroups() {

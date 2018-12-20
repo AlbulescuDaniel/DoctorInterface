@@ -11,7 +11,6 @@ import constant.AccountType;
 import constant.Consts;
 import utility.CustomAlerts;
 import utility.JWTInfo;
-import utility.Utility;
 
 public class LoginSceneRequest {
   

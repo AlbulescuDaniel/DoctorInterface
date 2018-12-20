@@ -25,7 +25,7 @@ public class PrescriptionDetailsRequest {
     // throw new IOException();
     // }
 
-    URL obj = new URL(Consts.LOCAL_SERVER ? Consts.PRESCRIPTION_DETAILS_URL : Consts.OPENSHIFT_PRESCRIPTION_DETAILS_URL_URL + "/" + id.toString());
+    URL obj = new URL((Consts.LOCAL_SERVER ? Consts.PRESCRIPTION_DETAILS_URL : Consts.OPENSHIFT_PRESCRIPTION_DETAILS_URL_URL) + "/" + id.toString());
 
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();
     con.setRequestMethod("GET");
