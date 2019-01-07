@@ -140,7 +140,6 @@ public class CreatePrescriptionTableControl {
     pane.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) -> {
       Double newuPrefHeight = newSceneHeight.doubleValue() * Double.valueOf(54 / 100d);
       if(newuPrefHeight <= prefHeight) {
-        System.err.println(newuPrefHeight);
         createPrescriptionComponentsGridRow.setMinHeight(newuPrefHeight);
         createPrescriptionScrollPane.setMinHeight(newuPrefHeight);
         createPrescriptionGridPane.setPrefHeight(newuPrefHeight);

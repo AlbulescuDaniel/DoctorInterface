@@ -8,7 +8,7 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-@SuppressWarnings({ "restriction", "unused" })
+@SuppressWarnings("restriction")
 public class GUIUtils {
   private static Method columnToFitMethod;
 

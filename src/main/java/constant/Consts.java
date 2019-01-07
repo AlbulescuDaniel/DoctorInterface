@@ -28,5 +28,8 @@ public class Consts {
   
   public static final String DRUG_PROSPECTUS_URL = "http://localhost:8080/drugs/name";
   public static final String OPENSHIFT_DRUG_PROSPECTUS_URL = "http://licenta-licenta.193b.starter-ca-central-1.openshiftapps.com/drugs/name";
+  
+  public static final String DOCTOR_PROFILE_URL = "http://localhost:8080/doctors/profile";
+  public static final String OPENSHIFT_DOCTOR_PROFILE_URL = "http://licenta-licenta.193b.starter-ca-central-1.openshiftapps.com/doctors/profile";
 
 }

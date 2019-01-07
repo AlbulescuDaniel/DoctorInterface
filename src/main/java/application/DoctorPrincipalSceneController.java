@@ -9,6 +9,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import entity.Address;
 import entity.CreatePatientDTO;
+import entity.DoctorProfile;
 import entity.Drug;
 import entity.Prescription;
 import entity.PrescriptionDetails;
@@ -38,6 +39,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import request.AutocompletePrescriptionRequest;
 import request.CreatePrescriptionRequest;
+import request.DoctorProfileRequest;
 import request.DrugProspectumRequest;
 import request.PrescriptionDetailsRequest;
 import request.PrescriptionsTabRequest;
@@ -47,6 +49,7 @@ import table.CreatePrescriptionTableFormat;
 import table.PatientPrescriptionsTableControl;
 import table.PatientPrescriptionsTableFormat;
 import table.PrescriptionDetailsTableControl;
+import table.ProfileScene;
 import utility.DateFormatConverter;
 import utility.JWTInfo;
 
@@ -396,7 +399,7 @@ public class DoctorPrincipalSceneController {
 
   @FXML
   private ComboBox<String> logOutComboBox;
-  
+
   @FXML
   private ImageView imageViewBackground;
 
@@ -437,8 +440,8 @@ public class DoctorPrincipalSceneController {
 
     populateTableButton.setOnAction(event -> {
       try {
-        List<PrescriptionWithPatientName> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(), datepickerTo.getValue(),
-            token);
+        List<PrescriptionWithPatientName> prescriptions = PrescriptionsTabRequest.requestFillPrescriptionTable(firstNameField.getText(), lastNameField.getText(), datepickerFrom.getValue(),
+            datepickerTo.getValue(), token);
         PatientPrescriptionsTableControl.initializePrescriptionTable(prescriptions, table, diagnostic, days, prescriptionDate, prescriptionTableId);
       }
       catch (IOException e) {
@@ -527,13 +530,13 @@ public class DoctorPrincipalSceneController {
       searchBoxDrugName.setPrefWidth(newSceneWidth.doubleValue() * (25d / 100));
       imageViewBackground.setFitWidth(newSceneWidth.doubleValue());
     });
-    
+
     pane.heightProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) -> {
       imageViewBackground.setFitHeight(newSceneHeight.doubleValue() - 70);
     });
 
     drugName.getStyleClass().add("copyable-label");
-    
+
     drugSearchButton.setOnAction(event -> {
       try {
         Drug drug = DrugProspectumRequest.drugProspectumRequest(searchBoxDrugName.getText(), token);
@@ -551,7 +554,6 @@ public class DoctorPrincipalSceneController {
         drugSpecialPrecautions.setText(drug.getSpecialPrecautionsForStorage());
         drugMarketing.setText(drug.getMarketingAuthorisationHolder());
         drugDetailsGridPane.setVisible(true);
-        System.out.println("ajunge");
         medicationTabGridMessage.setVisible(false);
       }
       catch (IOException e1) {
@@ -559,11 +561,20 @@ public class DoctorPrincipalSceneController {
     });
 
     logOutComboBox.setItems(FXCollections.observableArrayList("Logout", "Profile"));
-
     logOutComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("Logout")) {
         this.setToken(null);
         Main.showLoginView();
+      }
+      if (newVal.equals("Profile")) {
+        try {
+          DoctorProfile doctorProfile = DoctorProfileRequest.doctorProfileRequest(token);
+          new ProfileScene().initProfile(doctorProfile);
+        }
+        catch (Exception e1) {
+        }
+        logOutComboBox.getItems().removeAll(logOutComboBox.getItems());
+        logOutComboBox.setItems(FXCollections.observableArrayList("Logout", "Profile"));
       }
     });
   }
@@ -603,5 +614,4 @@ public class DoctorPrincipalSceneController {
     createPrescriptionHospitalBox.setToggleGroup(createPatientInstitution);
     createPrescriptionOtherInstitutionBox.setToggleGroup(createPatientInstitution);
   }
-
 }
