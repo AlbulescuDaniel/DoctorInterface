@@ -97,7 +97,7 @@
 												</Label>
 												<TextField fx:id="firstNameField" prefWidth="280.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 												<Label text="Last Name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-												<TextField fx:id="lastNameField" prefWidth="100.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+												<TextField fx:id="lastNameField" prefWidth="100.0" promptText="Optional" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
 											</children>
 											<GridPane.margin>
 												<Insets bottom="20.0" top="20.0" />
