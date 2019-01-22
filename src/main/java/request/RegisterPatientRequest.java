@@ -66,7 +66,7 @@ public class RegisterPatientRequest {
     wr.flush();
 
     if (con.getResponseCode() == 201) {
-      CustomAlerts.showRegisteredPatientAlert(createPatientDTO.getFirstName(), createPatientDTO.getFirstName());
+      CustomAlerts.showRegisteredPatientAlert(createPatientDTO.getFirstName(), createPatientDTO.getLastName());
     }
     else if (con.getResponseCode() == 503) {
       CustomAlerts.showServiceUnavailableAlert();

@@ -16,25 +16,29 @@ import org.json.JSONArray;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
 import constant.Consts;
 import entity.PrescriptionWithPatientName;
 import entity.UserDetailsFromPrescriptions;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class PrescriptionsTabRequest {
 
-  static Boolean ok = true;
+  private static Boolean ok = true;
+  private static int number;
 
   private PrescriptionsTabRequest() {
   }
 
   public static List<PrescriptionWithPatientName> requestFillPrescriptionTable(String firstName, String lastName, LocalDate from, LocalDate to, JWTInfo token) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+    if (!new Utility().isOnline()) {
+      CustomAlerts.showInternetErrorConnectionAlert();
+      throw new IOException();
+    }
 
     from = from.minusDays(1);
     to = to.plusDays(1);
@@ -77,12 +81,6 @@ public class PrescriptionsTabRequest {
         Gson gson = new GsonBuilder().create();
         prescriptions.add(gson.fromJson(object.toString().trim(), PrescriptionWithPatientName.class));
       }
-
-      if (prescriptions.isEmpty()) {
-        CustomAlerts.showemptyPrescriptionListAlert();
-        throw new IOException();
-      }
-
       Set<UserDetailsFromPrescriptions> userDetailsFromPrescriptions = new HashSet<>();
       prescriptions.forEach(p -> userDetailsFromPrescriptions.add(new UserDetailsFromPrescriptions(p.getPatientFirstName(), p.getPatientLastName(), p.getBirthDate(), p.getUserGender())));
 
@@ -98,8 +96,18 @@ public class PrescriptionsTabRequest {
       throw new IOException();
     }
     else if (con.getResponseCode() == 404) {
-      CustomAlerts.showPatientDoesNotExistAlert();
-      throw new IOException();
+      Gson gson = new Gson();
+      JsonReader reader = new JsonReader(new InputStreamReader(con.getErrorStream()));
+      JsonObject response = gson.fromJson(reader, JsonObject.class);
+      String errorResponse = response.get("details").toString().replace("\"[\"", "").replace("\"]\"", "");
+      
+      if(errorResponse.equals("[\"0\"]")) {
+        CustomAlerts.showemptyPrescriptionListAlert();
+      }
+      if(errorResponse.equals("[\"1\"]")) {
+        CustomAlerts.showPatientDoesNotExistAlert();
+      }
+      return new ArrayList<>();
     }
     else {
       return Collections.emptyList();

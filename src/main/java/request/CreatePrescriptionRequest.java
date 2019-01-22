@@ -93,6 +93,7 @@ public class CreatePrescriptionRequest {
       Gson gson = new Gson();
 
       JsonReader reader = new JsonReader(new InputStreamReader(con.getErrorStream()));
+      
       JsonObject response = gson.fromJson(reader, JsonObject.class);
       CustomAlerts.showPresciptionDatabaseAlert(response.get("details").toString().replace("[", "").replace("]", ""));
     }
