@@ -11,14 +11,15 @@ import constant.AccountType;
 import constant.Consts;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class LoginSceneRequest {
   
   public JWTInfo sendLogInDoctorPOST(String email, String password) throws IOException {
-//     if (!new Utility().isOnline()) {
-//     CustomAlerts.showInternetErrorConnectionAlert();
-//     throw new IOException();
-//     }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL object = new URL(Consts.LOCAL_SERVER ? Consts.LOGIN_URL : Consts.OPENSHIFT_LOGIN_URL);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();

@@ -13,6 +13,7 @@ import constant.Consts;
 import entity.PrescriptionDetails;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class PrescriptionDetailsRequest {
 
@@ -20,10 +21,10 @@ public class PrescriptionDetailsRequest {
   }
 
   public static PrescriptionDetails prescriptionDetailsRequest(Long id, JWTInfo token) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL obj = new URL((Consts.LOCAL_SERVER ? Consts.PRESCRIPTION_DETAILS_URL : Consts.OPENSHIFT_PRESCRIPTION_DETAILS_URL_URL) + "/" + id.toString());
 

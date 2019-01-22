@@ -17,6 +17,7 @@ import constant.Consts;
 import entity.Drug;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class DrugProspectumRequest {
 
@@ -24,10 +25,10 @@ public class DrugProspectumRequest {
   }
 
   public static Drug drugProspectumRequest(String name, JWTInfo token) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL obj = new URL(((Consts.LOCAL_SERVER ? Consts.DRUG_PROSPECTUS_URL : Consts.OPENSHIFT_DRUG_PROSPECTUS_URL) + "?name=" + name).replaceAll(" ", "%20"));
 

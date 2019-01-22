@@ -16,6 +16,7 @@ import constant.Consts;
 import entity.CreatePatientDTO;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class RegisterPatientRequest {
 
@@ -23,10 +24,10 @@ public class RegisterPatientRequest {
   }
 
   public static void registerPatientRequest(JWTInfo token, CreatePatientDTO createPatientDTO) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL object = new URL(Consts.LOCAL_SERVER ? Consts.PREGISTER_PATIENT_URL : Consts.OPENSHIFT_PREGISTER_PATIENT_URL);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();

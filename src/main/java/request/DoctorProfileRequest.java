@@ -13,16 +13,17 @@ import constant.Consts;
 import entity.DoctorProfile;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class DoctorProfileRequest {
   private DoctorProfileRequest() {
   }
 
   public static DoctorProfile doctorProfileRequest(JWTInfo token) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL obj = new URL((Consts.LOCAL_SERVER ? Consts.DOCTOR_PROFILE_URL : Consts.OPENSHIFT_DOCTOR_PROFILE_URL) + "?userName=" + token.getUser());
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();

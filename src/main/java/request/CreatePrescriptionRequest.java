@@ -20,6 +20,7 @@ import constant.Consts;
 import entity.Prescription;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class CreatePrescriptionRequest {
 
@@ -27,10 +28,10 @@ public class CreatePrescriptionRequest {
   }
 
   public static void createPrescriptionRequest(String firstName, String lastName, JWTInfo token, Prescription prescription) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL object = new URL((Consts.LOCAL_SERVER ? Consts.CREATE_PRESCRIPTION_URL : Consts.OPENSHIFT_CREATE_PRESCRIPTION_URL) + "?firstName=" + firstName + "&lastName=" + lastName);
     HttpURLConnection con = (HttpURLConnection)object.openConnection();

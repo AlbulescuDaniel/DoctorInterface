@@ -13,16 +13,17 @@ import constant.Consts;
 import entity.PrescriptionDoctorHospital;
 import utility.CustomAlerts;
 import utility.JWTInfo;
+import utility.Utility;
 
 public class AutocompletePrescriptionRequest {
   private AutocompletePrescriptionRequest() {
   }
 
   public static PrescriptionDoctorHospital autocompleteRequest(JWTInfo token) throws IOException {
-    // if (!new Utility().isOnline()) {
-    // CustomAlerts.showInternetErrorConnectionAlert();
-    // throw new IOException();
-    // }
+     if (!new Utility().isOnline()) {
+     CustomAlerts.showInternetErrorConnectionAlert();
+     throw new IOException();
+     }
 
     URL obj = new URL((Consts.LOCAL_SERVER ? Consts.AUTOFILL_PRESCRIPTION_URL : Consts.OPENSHIFT_AUTOFILL_PRESCRIPTION_URL) + "?userName=" + token.getUser());
     HttpURLConnection con = (HttpURLConnection)obj.openConnection();
